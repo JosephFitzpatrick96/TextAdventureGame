@@ -4,6 +4,7 @@
 
 import random
 
+
 ####
 # player class
 class player(object):
@@ -18,8 +19,8 @@ class player(object):
     xp = 0
     maxxp = 10
     gold = 0
-    hpot = 3
-    mpot = 3
+    hpot = 5
+    mpot = 5
 
 
 # Enemy Classes
@@ -182,17 +183,18 @@ def combatsystem(enemyname):
             print("Which spell would you like to use?")
             print('1. Fireball\n2. Heal')
             schoice = input()
-            if schoice == "1" and player.mp < 5:
-                print("You do not have enough mana")
-                pause = input('')
-            else:
-                enemy.hp = enemy.hp - player.mattack
-                player.mp = player.mp - 5
-                if player.mp <= player.minmp:
-                    player.mp = player.minmp
-                print("You casted a fireball at the", enemy.name, "dealing", player.mattack, "their hp is now",
-                      enemy.hp)
-                pause = input('')
+            if schoice == "1":
+                if player.mp == 0:
+                    print("You do not have enough mana")
+                    pause = input('')
+                else:
+                    enemy.hp = enemy.hp - player.mattack
+                    player.mp = player.mp - 5
+                    if player.mp <= player.minmp:
+                        player.mp = player.minmp
+                    print("You casted a fireball at the", enemy.name, "dealing", player.mattack, "their hp is now",
+                          enemy.hp)
+                    pause = input('')
 
                 if enemy.hp > 0:
                     player.hp = player.hp - enemy.attack
@@ -231,6 +233,10 @@ def combatsystem(enemyname):
                     print("You already have full health")
                 else:
                     player.hp = player.hp + 50
+                    if player.hp > player.maxhp:
+                        player.hp = player.maxhp
+                    print("Your health is now", player.hp)
+                    pause = input('')
 
                 if enemy.hp > 0:
                     player.hp = player.hp - enemy.attack
@@ -240,23 +246,27 @@ def combatsystem(enemyname):
             print("Which item would you like to use")
             print("1. HP Potion\n2. MP Potion")
             potchoice = input()
-            if potchoice == "1" and player.hpot == 0:
-                print("You do not have any HP Potions")
-                pause = input('')
-            else:
-                player.hp = player.hp + 50
-                if player.hp > player.maxhp:
-                    player.hp = player.maxhp
-                print("Your health is now", player.hp)
-                pause = input('')
+            if potchoice == "1":
+                if player.hpot == 0:
+                    print("You do not have any HP Potions")
+                    pause = input('')
+                else:
+                    player.hp = player.hp + 50
+                    player.hpot = player.hpot - 1
+                    if player.hp > player.maxhp:
+                        player.hp = player.maxhp
+                    print("Your health is now", player.hp)
+                    pause = input('')
 
-            if potchoice == "2" and player.mpot == 0:
-                print("You do not have any MP Potions")
-                pause = input('')
-            else:
-                player.mp = player.mp + 50
-                if player.mp > player.maxmp:
-                    player.mp = player.maxmp
+            if potchoice == "2":
+                if player.mpot == 0:
+                    print("You do not have any mana potions")
+                    pause = input('')
+                else:
+                    player.mp = player.mp + 50
+                    player.mpot = player.mpot - 1
+                    if player.mp > player.maxmp:
+                        player.mp = player.maxmp
                 print("Your mana is now", player.mp)
                 pause = input('')
 
