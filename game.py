@@ -67,7 +67,7 @@ def gamestart():
     if selection == "1":
         player.hp = 200
         player.maxhp = 200
-        player.mp = 50
+        player.mp = 5
         player.maxmp = 50
         player.attack = 10
         player.mattack = 5
@@ -178,23 +178,36 @@ def combatsystem(enemyname):
                 print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
 
         if choice == "2":
+            print(player.name, "MP =", player.mp)
             print("Which spell would you like to use?")
             print('1. Fireball\n2. Heal')
             schoice = input()
-            if schoice == "1":
+            if schoice == "1" and player.mp < 5:
+                print("You do not have enough mana")
+                pause = input('')
+            else:
                 enemy.hp = enemy.hp - player.mattack
+                player.mp = player.mp - 5
+                if player.mp <= player.minmp:
+                    player.mp = player.minmp
                 print("You casted a fireball at the", enemy.name, "dealing", player.mattack, "their hp is now",
                       enemy.hp)
+                pause = input('')
+
                 if enemy.hp > 0:
                     player.hp = player.hp - enemy.attack
                     print(enemy.name, 'hits you for', enemy.attack, ', your hp is now', player.hp)
+                    pause = input('')
+                    print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
+                    if player.hp <= 0:
+                        gameover()
                 else:
                     if enemy.name == "Slime":
                         enemy.hp = 10
                     elif enemy.name == "Spider":
                         enemy.hp = 8
                     elif enemy.name == "Skeleton":
-                        enemy.hp = 15
+                        enemy.hp = 30
 
                     print(player.name, 'has defeated the', enemy.name)
                     pause = input('')
