@@ -4,21 +4,19 @@
 
 import random
 
-# weapon dictionary
-weapons = {"Great sword": 40}
-
 
 # player class
 class player(object):
-    name = "player"
+    name = 'player'
     maxhp = 0
     maxmp = 0
+    minmp = 0
     hp = 0
     mp = 0
     attack = 10
     mattack = 5
     xp = 0
-    maxxp = 100
+    maxxp = 10
     gold = 0
     hpot = 3
     mpot = 3
@@ -47,8 +45,8 @@ class spider(object):
     drop = random.randint(0, 2)
 
 
-class mushroom(object):
-    name = "Mushroom"
+class skeleton(object):
+    name = "Skeleton"
     hp = 30
     mp = 0
     attack = 4
@@ -93,6 +91,7 @@ def gamestart():
         print('Mana: ', player.mp)
         print('Attack: ', player.attack)
         print('Magic Attack: ', player.mattack)
+        pause = input('')
         return player
 
     elif selection == "3":
@@ -107,69 +106,76 @@ def gamestart():
         print('Mana: ', player.mp)
         print('Attack: ', player.attack)
         print('Magic Attack: ', player.mattack)
+        pause = input('')
         return player
 
     else:
         print('Please select either 1, 2, or 3. Restarting character creation')
+        pause = input('')
         gamestart()
 
 
 gamestart()
 
 
-def enemyselect(slime, spider, mushroom):
-    enemyList = [slime, spider, mushroom]
-    eChance = random.randint(0, 2)
-    enemy = enemyList[eChance]
-    return enemy
-
-
-def drop():
-    drop = ["hp potion", "mp potion", "great sword"]
-    dChance = random.randint(0, 2)
-    itemDrop = drop[dChance]
-    return itemDrop
-
-
-def combatsystem():
-    enemy = enemyselect(slime, spider, mushroom)
+def combatsystem(enemyname):
+    enemy = enemyname
     print('You encountered a', enemy.name)
     print('What would you like to do?')
-    print(player.name, "HP =", player.hp)
+    print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
     while enemy.hp > 0:
         choice = input(' 1. Attack\n 2. Magic\n 3. Use Item\n')
 
         if choice == "1":
             print(player.name, 'attacks the', enemy.name)
+            pause = input('')
             hitchance = random.randint(0, 10)
             if hitchance > 2:
                 enemy.hp = enemy.hp - player.attack
                 print('The', enemy.name, 'lost', player.attack, 'health, their hp is now', enemy.hp)
+                pause = input('')
 
                 if enemy.hp > 0:
                     player.hp = player.hp - enemy.attack
                     print(enemy.name, 'hits you for', enemy.attack, ', your hp is now', player.hp)
+                    pause = input('')
+                    print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
+                    if player.hp <= 0:
+                        gameover()
 
                 else:
                     if enemy.name == "Slime":
                         enemy.hp = 10
-                        player.gold = player.gold + 5
                     elif enemy.name == "Spider":
                         enemy.hp = 8
-                        player.gold = player.gold + 6
-                    elif enemy.name == "Mushroom":
-                        enemy.hp = 15
-                        player.gold = player.gold + 10
+                    elif enemy.name == "Skeleton":
+                        enemy.hp = 30
 
                     print(player.name, 'has defeated the', enemy.name)
-                    print('item drop')
-                    itemDrop = drop()
-                    print(player.name, "got a", itemDrop)
+                    pause = input('')
+                    player.xp = player.xp + enemy.xpval
+                    player.gold = player.gold + enemy.gpval
+                    print(player.name, 'has gained', enemy.xpval, 'xp', 'and got', enemy.gpval, 'gold')
+                    pause = input('')
+                    if player.xp >= player.maxxp:
+                        player.maxhp = player.maxhp + 20
+                        player.maxmp = player.maxmp + 20
+                        player.attack = player.attack + 5
+                        player.mattack = player.mattack + 5
+                        print(player.name, "leveled up!")
+                        pause = input('')
+                    else:
+                        pass
                     break
             else:
-                print(player.name, 'missed')
+                print(player.name, 'missed the', enemy.name)
+                pause = input('')
                 player.hp = player.hp - enemy.attack
                 print(enemy.name, 'hits you for', enemy.attack, ', your hp is now', player.hp)
+                pause = input('')
+                if player.hp <= 0:
+                    gameover()
+                print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
 
         if choice == "2":
             print("Which spell would you like to use?")
@@ -187,13 +193,24 @@ def combatsystem():
                         enemy.hp = 10
                     elif enemy.name == "Spider":
                         enemy.hp = 8
-                    elif enemy.name == "Mushroom":
+                    elif enemy.name == "Skeleton":
                         enemy.hp = 15
 
                     print(player.name, 'has defeated the', enemy.name)
-                    print('item drop')
-                    itemDrop = drop()
-                    print(player.name, "got a", itemDrop)
+                    pause = input('')
+                    player.xp = player.xp + enemy.xpval
+                    player.gold = player.gold + enemy.gpval
+                    print(player.name, 'has gained', enemy.xpval, 'xp', 'and got', enemy.gpval, 'gold')
+                    pause = input('')
+                    if player.xp >= player.maxxp:
+                        player.maxhp = player.maxhp + 20
+                        player.maxmp = player.maxmp + 20
+                        player.attack = player.attack + 5
+                        player.mattack = player.mattack + 5
+                        print(player.name, "leveled up!")
+                        pause = input('')
+                    else:
+                        pass
                     break
 
             if schoice == "2":
@@ -212,21 +229,39 @@ def combatsystem():
             potchoice = input()
             if potchoice == "1" and player.hpot == 0:
                 print("You do not have any HP Potions")
+                pause = input('')
             else:
                 player.hp = player.hp + 50
                 if player.hp > player.maxhp:
                     player.hp = player.maxhp
+                print("Your health is now", player.hp)
+                pause = input('')
 
             if potchoice == "2" and player.mpot == 0:
                 print("You do not have any MP Potions")
+                pause = input('')
             else:
                 player.mp = player.mp + 50
                 if player.mp > player.maxmp:
                     player.mp = player.maxmp
+                print("Your mana is now", player.mp)
+                pause = input('')
 
             if enemy.hp > 0:
                 player.hp = player.hp - enemy.attack
                 print(enemy.name, 'hits you for', enemy.attack, ', your hp is now', player.hp)
+                pause = input('')
+                if player.hp <= 0:
+                    gameover()
+                print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
 
 
-combatsystem()
+def gameover():
+    print(player.name, "has died.")
+    pause = input('')
+    print("Game Over")
+    exit()
+
+
+combatsystem(skeleton)
+combatsystem(skeleton)
