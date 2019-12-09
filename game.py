@@ -18,7 +18,7 @@ class player(object):
     mattack = 5
     xp = 0
     maxxp = 10
-    gold = 0
+    gold = 100
     hpot = 5
     mpot = 5
 
@@ -116,9 +116,6 @@ def gamestart():
         gamestart()
 
 
-gamestart()
-
-
 def combatsystem(enemyname):
     enemy = enemyname
     print('You encountered a', enemy.name)
@@ -159,6 +156,8 @@ def combatsystem(enemyname):
                     print(player.name, 'has gained', enemy.xpval, 'xp', 'and got', enemy.gpval, 'gold')
                     pause = input('')
                     if player.xp >= player.maxxp:
+                        player.maxxp = player.maxxp + 15
+                        player.xp = 0
                         player.maxhp = player.maxhp + 20
                         player.maxmp = player.maxmp + 20
                         player.attack = player.attack + 5
@@ -218,6 +217,8 @@ def combatsystem(enemyname):
                     print(player.name, 'has gained', enemy.xpval, 'xp', 'and got', enemy.gpval, 'gold')
                     pause = input('')
                     if player.xp >= player.maxxp:
+                        player.maxxp = player.maxxp + 15
+                        player.xp = 0
                         player.maxhp = player.maxhp + 20
                         player.maxmp = player.maxmp + 20
                         player.attack = player.attack + 5
@@ -279,6 +280,76 @@ def combatsystem(enemyname):
                 print(player.name, "HP =", player.hp, enemy.name, "HP =", enemy.hp)
 
 
+def randomenemy():
+    global rename
+    elist = [slime, spider]
+    rename = random.choice(elist)
+    return rename
+
+
+def shop():
+    print("Welcome to the shop")
+    print("What would you like to buy?")
+    print(player.name, "Gold:", player.gold)
+    print("1. Health Potion  2 Gold\n2. Mana Potion  2 Gold\n3. Health Upgrade  20 Gold\n4. Mana Upgrade  20 Gold\n"
+          "5. Exit Shop")
+    shopchoice = input()
+    if shopchoice == "1":
+        if player.gold < 2:
+            print("You do not have enough gold")
+            pause = input('')
+        else:
+            player.hpot = player.hpot + 1
+            player.gold = player.gold - 2
+            print("You purchased a health potion")
+            pause = input('')
+            shop()
+    if shopchoice == "2":
+        if player.gold < 2:
+            print("You do not have enough gold")
+            pause = input('')
+        else:
+            player.mpot = player.mpot + 1
+            player.gold = player.gold - 2
+            print("You purchased a mana potion")
+            pause = input('')
+            shop()
+    if shopchoice == "3":
+        if player.gold < 20:
+            print("You do not have enough gold")
+            pause = input('')
+        else:
+            player.maxhp = player.maxhp + 20
+            player.gold = player.gold - 20
+            print("Your max health is now", player.maxhp)
+            pause = input('')
+            shop()
+    if shopchoice == "4":
+        if player.gold < 20:
+            print("You do not have enough gold")
+            pause = input('')
+        else:
+            player.maxmp = player.maxmp + 20
+            player.gold = player.gold - 20
+            print("Your max mana is now", player.maxmp)
+            pause = input('')
+            shop()
+    if shopchoice == "5":
+        town()
+
+
+def town():
+    print("Welcome to the town! What would you like to do?")
+    print("1. Fight\n2. Shop\n3.Inn\n4.Go to Dungeon")
+    tchoice = input()
+    if tchoice == "1":
+        randomenemy()
+        combatsystem(rename)
+        town()
+    if tchoice == "2":
+        shop()
+
+
 def gameover():
     print(player.name, "has died.")
     pause = input('')
@@ -286,5 +357,5 @@ def gameover():
     exit()
 
 
-combatsystem(skeleton)
-combatsystem(skeleton)
+gamestart()
+town()
