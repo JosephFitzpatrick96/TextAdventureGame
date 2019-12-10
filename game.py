@@ -17,44 +17,82 @@ class player(object):
     attack = 10
     mattack = 5
     xp = 0
-    maxxp = 10
-    gold = 100
-    hpot = 5
-    mpot = 5
+    maxxp = 25
+    gold = 0
+    hpot = 3
+    mpot = 3
+    key = 0
 
 
 # Enemy Classes
 class slime(object):
     name = "Slime"
-    hp = 20
+    hp = 30
     mp = 0
-    attack = 2
+    attack = 4
     mattack = 0
     xpval = 5
     gpval = 5
-    drop = random.randint(0, 2)
 
 
 class spider(object):
     name = "Spider"
-    hp = 18
+    hp = 25
     mp = 0
-    attack = 2
+    attack = 6
     mattack = 0
     xpval = 5
     gpval = 7
-    drop = random.randint(0, 2)
+
+
+class bat(object):
+    name = "Bat"
+    hp = 15
+    mp = 0
+    attack = 2
+    mattack = 0
+    xpval = 2
+    gpval = 2
 
 
 class skeleton(object):
     name = "Skeleton"
+    hp = 60
+    mp = 0
+    attack = 15
+    mattack = 0
+    xpval = 10
+    gpval = 9
+
+
+class undead(object):
+    name = "Undead"
+    hp = 35
+    mp = 0
+    attack = 7
+    mattack = 0
+    xpval = 10
+    gpval = 9
+
+
+class ghoul(object):
+    name = "Ghoul"
     hp = 30
     mp = 0
     attack = 4
     mattack = 0
     xpval = 10
     gpval = 9
-    drop = random.randint(0, 2)
+
+
+class skeletonking(object):
+    name = "Skeleton King"
+    hp = 100
+    mp = 0
+    attack = 25
+    mattack = 0
+    xpval = 10
+    gpval = 9
 
 
 # functions
@@ -66,11 +104,11 @@ def gamestart():
     print('Select a class')
     selection = input('1. Warrior \n2. Mage \n3. Paladin\n')
     if selection == "1":
-        player.hp = 200
-        player.maxhp = 200
-        player.mp = 5
-        player.maxmp = 50
-        player.attack = 10
+        player.hp = 150
+        player.maxhp = 150
+        player.mp = 40
+        player.maxmp = 40
+        player.attack = 100
         player.mattack = 5
         print("You selected the Warrior class, here are the stats")
         print('Health: ', player.hp)
@@ -86,7 +124,7 @@ def gamestart():
         player.mp = 100
         player.maxmp = 100
         player.attack = 5
-        player.mattack = 10
+        player.mattack = 20
         print("You selected the Mage class, here are the stats")
         print('Health: ', player.hp)
         print('Mana: ', player.mp)
@@ -146,7 +184,13 @@ def combatsystem(enemyname):
                         enemy.hp = 10
                     elif enemy.name == "Spider":
                         enemy.hp = 8
+                    elif enemy.name == "Bat":
+                        enemy.hp = 15
                     elif enemy.name == "Skeleton":
+                        enemy.hp = 40
+                    elif enemy.name == "Undead":
+                        enemy.hp = 35
+                    elif enemy.name == "Ghoul":
                         enemy.hp = 30
 
                     print(player.name, 'has defeated the', enemy.name)
@@ -158,8 +202,8 @@ def combatsystem(enemyname):
                     if player.xp >= player.maxxp:
                         player.maxxp = player.maxxp + 15
                         player.xp = 0
-                        player.maxhp = player.maxhp + 20
-                        player.maxmp = player.maxmp + 20
+                        player.maxhp = player.maxhp + 10
+                        player.maxmp = player.maxmp + 10
                         player.attack = player.attack + 5
                         player.mattack = player.mattack + 5
                         print(player.name, "leveled up!")
@@ -207,7 +251,13 @@ def combatsystem(enemyname):
                         enemy.hp = 10
                     elif enemy.name == "Spider":
                         enemy.hp = 8
+                    elif enemy.name == "Bat":
+                        enemy.hp = 15
                     elif enemy.name == "Skeleton":
+                        enemy.hp = 40
+                    elif enemy.name == "Undead":
+                        enemy.hp = 35
+                    elif enemy.name == "Ghoul":
                         enemy.hp = 30
 
                     print(player.name, 'has defeated the', enemy.name)
@@ -282,7 +332,7 @@ def combatsystem(enemyname):
 
 def randomenemy():
     global rename
-    elist = [slime, spider]
+    elist = [slime, spider, bat]
     rename = random.choice(elist)
     return rename
 
@@ -298,6 +348,7 @@ def shop():
         if player.gold < 2:
             print("You do not have enough gold")
             pause = input('')
+            shop()
         else:
             player.hpot = player.hpot + 1
             player.gold = player.gold - 2
@@ -308,6 +359,7 @@ def shop():
         if player.gold < 2:
             print("You do not have enough gold")
             pause = input('')
+            shop()
         else:
             player.mpot = player.mpot + 1
             player.gold = player.gold - 2
@@ -318,6 +370,7 @@ def shop():
         if player.gold < 20:
             print("You do not have enough gold")
             pause = input('')
+            shop()
         else:
             player.maxhp = player.maxhp + 20
             player.gold = player.gold - 20
@@ -328,6 +381,7 @@ def shop():
         if player.gold < 20:
             print("You do not have enough gold")
             pause = input('')
+            shop()
         else:
             player.maxmp = player.maxmp + 20
             player.gold = player.gold - 20
@@ -338,9 +392,263 @@ def shop():
         town()
 
 
+def inn():
+    print("Welcome to the Inn, would you like to rest?")
+    print("Cost: 5 Gold")
+    print("1. Yes\n2. No")
+    innchoice = input()
+    if innchoice == "1":
+        if player.gold < 5:
+            print("You do not have enough gold")
+            pause = input('')
+            inn()
+        else:
+            player.gold = player.gold - 5
+            player.hp = player.maxhp
+            player.mp = player.maxmp
+            print("You rested at the inn, full restoring health and mana.")
+            pause = input('')
+            town()
+    if innchoice == "2":
+        town()
+
+
+room1clear = 0
+room2clear = 0
+room3clear = 0
+room4clear = 0
+room5clear = 0
+room6clear = 0
+room7clear = 0
+room8clear = 0
+room9clear = 0
+
+
+def room1():
+    global room1clear
+    if room1clear == 1:
+        print("Room 1")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Up\n2. Right")
+        nav = input()
+        if nav == "1":
+            room4()
+        if nav == "2":
+            room2()
+        else:
+            room1()
+    else:
+        print("Room 1")
+        combatsystem(skeleton)
+        room1clear = 1
+        room1()
+
+
+def room2():
+    global room2clear
+    if room2clear == 1:
+        print("Room 2")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Left\n2. Up\n3. Right")
+        nav = input()
+        if nav == "1":
+            room4()
+        if nav == "2":
+            room5()
+        if nav == "3":
+            room3()
+        else:
+            room2()
+    else:
+        print("Room 2")
+        combatsystem(undead)
+        room2clear = 1
+        room2()
+
+
+def room3():
+    global room3clear
+    if room3clear == 1:
+        print("Room 3")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Up\n2. Left")
+        nav = input()
+        if nav == "1":
+            room6()
+        if nav == "2":
+            room2()
+        else:
+            room3()
+    else:
+        print("Room 3")
+        combatsystem(undead)
+        room3clear = 1
+        room3()
+
+
+def room4():
+    global room4clear
+    if room4clear == 1:
+        print("Room 4")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Up\n2. Down\n3. Right")
+        nav = input()
+        if nav == "1":
+            room7()
+        if nav == "2":
+            room1()
+        if nav == "3":
+            room5()
+        else:
+            room4()
+    else:
+        print("Room 4")
+        combatsystem(skeleton)
+        room4clear = 1
+        room4()
+
+
+def room5():
+    global room5clear
+    if room5clear == 1:
+        print("Room 5")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Up\n2. Down\n3. Left\n4. Right")
+        nav = input()
+        if nav == "1":
+            room4()
+        if nav == "2":
+            room2()
+        if nav == "3":
+            room4()
+        if nav == "4":
+            room6()
+        else:
+            room5()
+    else:
+        print("Room 5")
+        combatsystem(ghoul)
+        room5clear = 1
+        room5()
+
+
+def room6():
+    global room6clear
+    if room6clear == 1:
+        print("Room 6")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Up\n2. Down\n3. Left")
+        nav = input()
+        if nav == "1":
+            room9()
+        if nav == "2":
+            room3()
+        if nav == "3":
+            room5()
+        else:
+            room6()
+    else:
+        print("Room 6")
+        combatsystem(skeleton)
+        room6clear = 1
+        room6()
+
+
+def room7():
+    global room7clear
+    if room7clear == 1:
+        print("Room 7")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Down\n2. Right")
+        nav = input()
+        if nav == "1":
+            room4()
+        if nav == "2":
+            room8()
+        else:
+            room7()
+    else:
+        print("Room 7")
+        combatsystem(undead)
+        player.key = 1
+        print("You got a key!")
+        pause = input('')
+        room7clear = 1
+        room7()
+
+
+def room8():
+    global room8clear
+    if room8clear == 1:
+        print("Room 8")
+        print("This room has been cleared")
+        print("Where would you like to go?")
+        print("1. Left\n2. Right\n3. Down")
+        nav = input()
+        if nav == "1":
+            room7()
+        if nav == "2":
+            room9()
+        if nav == "3":
+            room5()
+    else:
+        print("Room 8")
+        combatsystem(skeleton)
+        room8clear = 1
+        room8()
+
+
+def room9():
+    global room9clear
+    if room9clear == 1:
+        print("Room 9")
+        print("This room has been cleared")
+        print("There is a door, behind this door is a boss battle. A key is required to enter. Do you want to enter?")
+        print("1. Yes\n2. No")
+        keychoice = input()
+        if keychoice == "1":
+            if player.key == 0:
+                print("You do not have the key")
+                pass
+            else:
+                combatsystem(skeletonking)
+                print("Congratulations! You beat the game!")
+                exit()
+        if keychoice == "2":
+            pass
+        print("Where would you like to go?")
+        print("1. Down\n2. Left")
+        nav = input()
+        if nav == "1":
+            room6()
+        if nav == "2":
+            room8()
+        else:
+            room9()
+
+    else:
+        print("Room 9")
+        combatsystem(skeleton)
+        room9clear = 1
+        room9()
+
+
+def dungeon():
+    print(player.name, "entered the dungeon")
+    pause = input('')
+    room1()
+
+
 def town():
     print("Welcome to the town! What would you like to do?")
-    print("1. Fight\n2. Shop\n3.Inn\n4.Go to Dungeon")
+    print("1. Fight\n2. Shop\n3. Inn\n4. Go to Dungeon\n5. Exit game")
     tchoice = input()
     if tchoice == "1":
         randomenemy()
@@ -348,6 +656,14 @@ def town():
         town()
     if tchoice == "2":
         shop()
+    if tchoice == "3":
+        inn()
+    if tchoice == "4":
+        dungeon()
+    if tchoice == "5":
+        exit()
+    else:
+        town()
 
 
 def gameover():
@@ -358,4 +674,5 @@ def gameover():
 
 
 gamestart()
+room9()
 town()
