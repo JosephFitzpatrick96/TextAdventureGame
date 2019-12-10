@@ -91,8 +91,8 @@ class skeletonking(object):
     mp = 0
     attack = 25
     mattack = 0
-    xpval = 10
-    gpval = 9
+    xpval = 20
+    gpval = 20
 
 
 # functions
