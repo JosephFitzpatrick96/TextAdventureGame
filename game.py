@@ -27,22 +27,22 @@ class player(object):
 # Enemy Classes
 class slime(object):
     name = "Slime"
-    hp = 30
+    hp = 25
     mp = 0
     attack = 4
     mattack = 0
-    xpval = 5
+    xpval = 3
     gpval = 5
 
 
 class spider(object):
     name = "Spider"
-    hp = 25
+    hp = 20
     mp = 0
-    attack = 6
+    attack = 5
     mattack = 0
-    xpval = 5
-    gpval = 7
+    xpval = 3
+    gpval = 4
 
 
 class bat(object):
@@ -57,21 +57,21 @@ class bat(object):
 
 class skeleton(object):
     name = "Skeleton"
-    hp = 60
+    hp = 45
     mp = 0
     attack = 15
     mattack = 0
-    xpval = 10
-    gpval = 9
+    xpval = 15
+    gpval = 10
 
 
 class undead(object):
     name = "Undead"
     hp = 35
     mp = 0
-    attack = 7
+    attack = 10
     mattack = 0
-    xpval = 10
+    xpval = 12
     gpval = 9
 
 
@@ -79,10 +79,10 @@ class ghoul(object):
     name = "Ghoul"
     hp = 30
     mp = 0
-    attack = 4
+    attack = 7
     mattack = 0
-    xpval = 10
-    gpval = 9
+    xpval = 8
+    gpval = 8
 
 
 class skeletonking(object):
@@ -108,7 +108,7 @@ def gamestart():
         player.maxhp = 150
         player.mp = 40
         player.maxmp = 40
-        player.attack = 100
+        player.attack = 15
         player.mattack = 5
         print("You selected the Warrior class, here are the stats")
         print('Health: ', player.hp)
@@ -181,13 +181,13 @@ def combatsystem(enemyname):
 
                 else:
                     if enemy.name == "Slime":
-                        enemy.hp = 10
+                        enemy.hp = 25
                     elif enemy.name == "Spider":
-                        enemy.hp = 8
+                        enemy.hp = 20
                     elif enemy.name == "Bat":
                         enemy.hp = 15
                     elif enemy.name == "Skeleton":
-                        enemy.hp = 40
+                        enemy.hp = 45
                     elif enemy.name == "Undead":
                         enemy.hp = 35
                     elif enemy.name == "Ghoul":
@@ -248,13 +248,13 @@ def combatsystem(enemyname):
                         gameover()
                 else:
                     if enemy.name == "Slime":
-                        enemy.hp = 10
+                        enemy.hp = 25
                     elif enemy.name == "Spider":
-                        enemy.hp = 8
+                        enemy.hp = 20
                     elif enemy.name == "Bat":
                         enemy.hp = 15
                     elif enemy.name == "Skeleton":
-                        enemy.hp = 40
+                        enemy.hp = 45
                     elif enemy.name == "Undead":
                         enemy.hp = 35
                     elif enemy.name == "Ghoul":
@@ -390,10 +390,13 @@ def shop():
             shop()
     if shopchoice == "5":
         town()
+    else:
+        shop()
 
 
 def inn():
     print("Welcome to the Inn, would you like to rest?")
+    print(player.name, "Gold:", player.gold)
     print("Cost: 5 Gold")
     print("1. Yes\n2. No")
     innchoice = input()
@@ -411,6 +414,8 @@ def inn():
             town()
     if innchoice == "2":
         town()
+    else:
+        inn()
 
 
 room1clear = 0
@@ -454,7 +459,7 @@ def room2():
         print("1. Left\n2. Up\n3. Right")
         nav = input()
         if nav == "1":
-            room4()
+            room1()
         if nav == "2":
             room5()
         if nav == "3":
@@ -521,7 +526,7 @@ def room5():
         print("1. Up\n2. Down\n3. Left\n4. Right")
         nav = input()
         if nav == "1":
-            room4()
+            room8()
         if nav == "2":
             room2()
         if nav == "3":
@@ -674,5 +679,4 @@ def gameover():
 
 
 gamestart()
-room9()
 town()
